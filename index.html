@@ -1,1 +1,274 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Em Nga yêu quý - 20/10 Sweet Gift</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ffe6e9 0%, #ffb3c1 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #590d22;
+            text-align: center;
+            overflow: hidden;
+            position: relative;
+        }
 
+        h1 {
+            font-size: 2.2rem;
+            color: #ff4d6d;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            z-index: 2;
+        }
+
+        /* Nút bật/tắt nhạc */
+        .music-btn {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.85);
+            border: 2px solid #ff4d6d;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+
+        .music-btn:active {
+            transform: scale(0.9);
+        }
+
+        /* Bó hoa nhún nhảy */
+        .flower-container {
+            margin: 20px auto;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 2;
+        }
+
+        .flower-container:hover {
+            transform: scale(1.15);
+        }
+
+        .flower-icon {
+            font-size: 75px;
+            animation: bounce 1.5s infinite alternate;
+        }
+
+        .flower-hint {
+            font-size: 15px;
+            color: #ff4d6d;
+            font-weight: bold;
+            margin-top: 8px;
+            background: rgba(255,255,255,0.85);
+            padding: 8px 18px;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-15px); }
+        }
+
+        /* Hiệu ứng Trái Tim Bay */
+        .heart {
+            position: absolute;
+            bottom: -50px;
+            color: #ff4d6d;
+            font-size: 20px;
+            user-select: none;
+            pointer-events: none;
+            z-index: 1;
+            animation: floatUp linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) scale(0.8) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-105vh) scale(1.3) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Hộp thoại Tâm thư (Modal) */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: #fff0f3;
+            border: 2px solid #ff758f;
+            padding: 25px;
+            border-radius: 20px;
+            max-width: 400px;
+            width: 85%;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(255, 77, 109, 0.3);
+            animation: popup 0.4s ease-out;
+            text-align: center;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 26px;
+            color: #ff4d6d;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .letter-body {
+            text-align: left;
+            margin-top: 15px;
+            line-height: 1.6;
+            color: #590d22;
+            font-size: 15px;
+        }
+
+        .letter-signature {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        @keyframes popup {
+            from { transform: scale(0.7); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nút Bật/Tắt Nhạc -->
+    <button class="music-btn" onclick="toggleMusic()" id="musicToggleBtn">🎵</button>
+
+    <h1>✨ Chúc Mừng Ngày 20/10 ✨</h1>
+    
+    <!-- Nhạc nền -->
+    <audio loop id="bg-music">
+        <source src="NhacHay.mp3.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Bó hoa nhún nhảy -->
+    <div class="flower-container" onclick="openLetter()">
+        <div class="flower-icon">💐</div>
+        <div class="flower-hint">Bấm vào bó hoa để mở tâm thư nè! ❤️</div>
+    </div>
+
+    <!-- Hộp thoại Tâm thư -->
+    <div id="letterModal" class="modal-overlay" onclick="closeLetter(event)">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeLetter(event)">&times;</span>
+            <h2 style="color: #ff4d6d; margin-top: 5px;">💌 Tâm thư của khoa dành cho em</h2>
+            <div class="letter-body">
+                <p>Gửi Nga ngố nhaaaa</p>
+                <p>Chúc em có một ngày 20/10 thật nhiều niềm vui, luôn xinh đẹp, rạng rỡ và hạnh phúc!</p>
+                <p>Cảm ơn em vì đã luôn ở bên cạnh và giúp đỡ anh sau bao nhiêu là chuyện.</p>
+                <p>Anh chúc em ngày càng học giỏi ngày càng xinh xắn ngày càng thành công trên con đường mà em đã chọn cho dù là bây giờ hay là sau này nha</p>
+                <p>Anh biết là có nhiều chuyện làm em áp lực làm em buồn em tiêu cực nhưng mà em hãy cố lên nhé tại vì vẫn còn có khoa ở đây sẵn sàng đồng hành cùng em và bảo kê em </p>
+                <P>Nhưng mà giờ để nói với em thì nhiều lắm vô số luôn í</P>
+                <p>Nên là anh chỉ tập trung vào việc chúc em thôi ahihi</p>
+                <p>Anh cảm ơn em đã giúp đỡ anh.</p>
+                <p>Cố lên nhé phải thành công đấy</p>
+                <p>Anh chúc em 20/10 vui vẻ có thiệt nhiều niềm vui trong cuộc sống</p>
+                <p class="letter-signature">Anh quý Nga ngố nhiều lắm đấy<br><strong>Đặng Anh Khoa</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const audio = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('musicToggleBtn');
+
+        // Bật/tắt nhạc khi bấm nút
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play();
+                musicBtn.innerText = '🎵';
+            } else {
+                audio.pause();
+                musicBtn.innerText = '🔇';
+            }
+        }
+
+        // Tự động phát nhạc ở tương tác đầu tiên của người dùng
+        document.body.addEventListener('click', function() {
+            if (audio.paused) {
+                audio.play().then(() => {
+                    musicBtn.innerText = '🎵';
+                }).catch(() => {});
+            }
+        }, { once: true });
+
+        // Quản lý Mở/Đóng Tâm thư
+        function openLetter() {
+            document.getElementById('letterModal').style.display = 'flex';
+        }
+
+        function closeLetter(event) {
+            if (event.target.classList.contains('modal-overlay') || event.target.classList.contains('close-btn')) {
+                document.getElementById('letterModal').style.display = 'none';
+            }
+        }
+
+        // Tạo hiệu ứng Trái Tim Bay
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            
+            // Các icon trái tim đa dạng
+            const heartIcons = ['❤️', '💖', '💗', '💓', '💕', '🌸'];
+            heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+
+            // Vị trí ngang ngẫu nhiên
+            heart.style.left = Math.random() * 100 + "vw";
+
+            // Thời gian bay ngẫu nhiên từ 4s đến 7s
+            const duration = Math.random() * 3 + 4;
+            heart.style.animationDuration = duration + "s";
+
+            // Kích thước ngẫu nhiên
+            heart.style.fontSize = Math.random() * 15 + 18 + "px";
+
+            document.body.appendChild(heart);
+
+            // Xóa phần tử trái tim sau khi bay xong để tránh nặng máy
+            setTimeout(() => {
+                heart.remove();
+            }, duration * 1000);
+        }
+
+        // Tạo trái tim liên tục mỗi 300ms
+        setInterval(createHeart, 300);
+    </script>
+</body>
+</html>
